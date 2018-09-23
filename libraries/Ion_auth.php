@@ -146,7 +146,7 @@ class Ion_auth
 			{
 				$data = array(
 					'identity' => $user->{$this->config->item('identity', 'ion_auth')},
-					'forgotten_password_code' => $user->forgotten_password_code
+					'forgotten_password_code' => $user->Forgotten_Password_Code
 				);
 
 				if (!$this->config->item('use_ci_email', 'ion_auth'))
@@ -159,7 +159,7 @@ class Ion_auth
 					$message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_forgot_password', 'ion_auth'), $data, TRUE);
 					$this->email->clear();
 					$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
-					$this->email->to($user->email);
+					$this->email->to($user->Member_Email);
 					$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_forgotten_password_subject'));
 					$this->email->message($message);
 
@@ -210,7 +210,7 @@ class Ion_auth
 			return FALSE;
 		}
 
-		$new_password = $this->ion_auth_model->forgotten_password_complete($code, $profile->salt);
+		$new_password = $this->ion_auth_model->forgotten_password_complete($code, $profile->Salt);
 
 		if ($new_password)
 		{
@@ -230,7 +230,7 @@ class Ion_auth
 
 				$this->email->clear();
 				$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
-				$this->email->to($profile->email);
+				$this->email->to($profile->Member_Email);
 				$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - ' . $this->lang->line('email_new_password_subject'));
 				$this->email->message($message);
 
@@ -525,7 +525,7 @@ class Ion_auth
 		}
 		foreach ($check_group as $key => $value)
 		{
-			$groups = (is_numeric($value)) ? array_keys($groups_array) : $groups_array;
+			$groups = (is_string($value)) ? $groups_array : array_keys($groups_array);
 
 			/**
 			 * if !all (default), in_array
